@@ -13,6 +13,8 @@ import android.content.pm.PackageManager;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.os.Handler;
+
 import android.util.Log;
 import android.util.SparseArray;
 import android.os.AsyncTask;
