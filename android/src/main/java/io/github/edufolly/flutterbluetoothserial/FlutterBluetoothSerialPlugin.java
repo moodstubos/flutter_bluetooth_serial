@@ -79,7 +79,7 @@ public class FlutterBluetoothSerialPlugin implements MethodCallHandler, RequestP
     /// Last ID given to any connection, used to avoid duplicate IDs 
     private int lastConnectionId = 0;
 
-
+Handler handler = new Handler();
 
     /// Registers plugin in Flutter plugin system
     public static void registerWith(Registrar registrar) {
@@ -1100,7 +1100,9 @@ public class FlutterBluetoothSerialPlugin implements MethodCallHandler, RequestP
         @Override
         protected void onRead(byte[] buffer) {
                     if (readSink != null) {
-                        readSink.success(buffer);
+                        handler.post( new Runnable() { public void run() {
+                            readSink.success(buffer);
+                        }} );
                     }
 
         }
