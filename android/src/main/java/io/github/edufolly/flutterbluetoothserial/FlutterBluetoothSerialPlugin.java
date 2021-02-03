@@ -1115,7 +1115,10 @@ Handler handler = new Handler();
                     if (byRemote) {
                         Log.d(TAG, "onDisconnected by remote (id: " + id + ")");
                         if (readSink != null) {
+                            handler.post( new Runnable() { public void run() {
                             readSink.endOfStream();
+                            }} );
+                            
                             readSink = null;
                         }
                     }
