@@ -875,26 +875,19 @@ public class FlutterBluetoothSerialPlugin implements MethodCallHandler, RequestP
 
                 Log.d(TAG, "Connecting to " + address + " (id: " + id + ")");
 
-                AsyncTask.execute(() -> {
                     try {
                         connection.connect(address);
-                        registrar.activity().runOnUiThread(new Runnable() {
-                            @Override 
-                            public void run() {
+                        
                                 result.success(id);
-                            }
-                        });
+                        
                     }
                     catch (Exception ex) {
-                        registrar.activity().runOnUiThread(new Runnable() {
-                            @Override 
-                            public void run() {
+                        
                                 result.error("connect_error", ex.getMessage(), exceptionToString(ex));
-                            }
-                        });
+                        
                         connections.remove(id);
                     }
-                });
+  
                 break;
             }
 
@@ -921,47 +914,26 @@ public class FlutterBluetoothSerialPlugin implements MethodCallHandler, RequestP
                 
                 if (call.hasArgument("string")) {
                     String string = call.argument("string");
-                    AsyncTask.execute(() -> {
+
                         try {
                             connection.write(string.getBytes());
-                            registrar.activity().runOnUiThread(new Runnable() {
-                                @Override 
-                                public void run() {
                                     result.success(null);
-                                }
-                            });
                         }
                         catch (Exception ex) {
-                            registrar.activity().runOnUiThread(new Runnable() {
-                                @Override 
-                                public void run() {
                                     result.error("write_error", ex.getMessage(), exceptionToString(ex));
-                                }
-                            });
                         }
-                    });
+
                 }
                 else if (call.hasArgument("bytes")) {
                     byte[] bytes = call.argument("bytes");
-                    AsyncTask.execute(() -> {
                         try {
                             connection.write(bytes);
-                            registrar.activity().runOnUiThread(new Runnable() {
-                                @Override 
-                                public void run() {
                                     result.success(null);
-                                }
-                            });
                         }
                         catch (Exception ex) {
-                            registrar.activity().runOnUiThread(new Runnable() {
-                                @Override 
-                                public void run() {
                                     result.error("write_error", ex.getMessage(), exceptionToString(ex));
-                                }
-                            });
                         }
-                    });
+
                 }
                 else {
                     result.error("invalid_argument", "there must be 'string' or 'bytes' argument", null);
@@ -1127,21 +1099,15 @@ public class FlutterBluetoothSerialPlugin implements MethodCallHandler, RequestP
 
         @Override
         protected void onRead(byte[] buffer) {
-            registrar.activity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
                     if (readSink != null) {
                         readSink.success(buffer);
                     }
-                }
-            });
+
         }
 
         @Override
         protected void onDisconnected(boolean byRemote) {
-            registrar.activity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
+            
                     if (byRemote) {
                         Log.d(TAG, "onDisconnected by remote (id: " + id + ")");
                         if (readSink != null) {
@@ -1152,8 +1118,7 @@ public class FlutterBluetoothSerialPlugin implements MethodCallHandler, RequestP
                     else {
                         Log.d(TAG, "onDisconnected by local (id: " + id + ")");
                     }
-                }
-            });
+            
         }
     }
 }
