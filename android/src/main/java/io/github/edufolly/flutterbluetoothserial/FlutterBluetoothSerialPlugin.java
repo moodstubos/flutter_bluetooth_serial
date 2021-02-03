@@ -102,7 +102,7 @@ public class FlutterBluetoothSerialPlugin implements MethodCallHandler, RequestP
 
         // General Bluetooth
         {
-            this.bluetoothManager = (BluetoothManager) registrar.activity().getSystemService(Context.BLUETOOTH_SERVICE);
+            this.bluetoothManager = (BluetoothManager) registrar.context().getSystemService(Context.BLUETOOTH_SERVICE);
             assert this.bluetoothManager != null;
 
             this.bluetoothAdapter = bluetoothManager.getAdapter();
